@@ -1,22 +1,21 @@
 import streamlit as st
 
-# Inject custom CSS for a pixelated design with green and gold
+# Inject custom CSS for a pixelated design with nostalgic pixelated text, green and gold
 custom_css = """
 <style>
-/* Set the background to dark green and text to gold, with a pixelated effect */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 body {
     background-color: #013220;
     color: #FFD700;
-    font-family: 'Courier New', monospace;
+    font-family: 'Press Start 2P', monospace;
     image-rendering: pixelated;
 }
 
-/* Style header elements in gold */
 h1, h2, h3 {
     color: #FFD700;
 }
 
-/* Style the Analyze Risks button */
 div.stButton > button {
     background-color: #FFD700;
     color: #013220;
@@ -24,7 +23,6 @@ div.stButton > button {
     font-weight: bold;
 }
 
-/* Style text input labels to be bold */
 div.stTextInput > label {
     font-weight: bold;
 }
