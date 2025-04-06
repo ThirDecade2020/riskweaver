@@ -8,17 +8,12 @@ from country_inquiry_store import record_country_inquiry
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# Enhanced custom CSS with a stronger green/gold gradient and bolder styling
+# Enhanced custom CSS with a strong green/gold gradient, bold styling, and animated glow
 custom_css = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-/* 
-   Stronger gradient:
-   - Starts at a deep green (#013220)
-   - Transitions to a mid-green (#025832)
-   - Ends in bold gold (#FFD700)
-*/
+/* Strong gradient background */
 body {
     background: linear-gradient(135deg, #013220 0%, #025832 50%, #FFD700 100%);
     color: #FFD700;
@@ -28,26 +23,18 @@ body {
     padding: 0;
 }
 
-/* 
-   Bolder text shadow for headers:
-   - Larger glow effect to make them pop against the gradient 
-*/
+/* Glowing headers */
 h1, h2, h3 {
     color: #FFD700;
     text-shadow: 3px 3px 8px rgba(255, 215, 0, 0.8);
 }
 
-/* 
-   Animated glowing effect for buttons:
-   - Thicker glow 
-   - Slightly longer animation cycle 
-*/
+/* Animated glowing effect for buttons */
 @keyframes glow {
     0% { box-shadow: 0 0 10px #FFD700; }
     50% { box-shadow: 0 0 30px #FFD700; }
     100% { box-shadow: 0 0 10px #FFD700; }
 }
-
 div.stButton > button {
     background-color: #FFD700;
     color: #013220;
@@ -58,15 +45,13 @@ div.stButton > button {
     cursor: pointer;
 }
 
-/* 
-   Bold label for text input 
-*/
+/* Bold text input labels */
 div.stTextInput > label {
     font-weight: bold;
     text-shadow: 1px 1px 3px rgba(255, 215, 0, 0.8);
 }
 
-/* Add some padding for the main content area */
+/* Extra padding for main content */
 .css-1lcbmhc, .css-18e3th9, .css-1outpf7 {
     padding: 1rem !important;
 }
@@ -79,8 +64,7 @@ st.markdown(custom_css, unsafe_allow_html=True)
 st.title("RiskWeaver – Cybersecurity Risk Analyzer")
 country = st.text_input("Enter a country name:")
 
-# Define a function to get cybersecurity risks from OpenAI using GPT-4,
-# including up-to-date sources and a one-paragraph insight.
+# Function to get cybersecurity risks from GPT-4, with up-to-date sources and one-paragraph insight
 def get_cybersecurity_risks(country):
     prompt = (
         f"Using the most recent publicly available data as of now, and based on information from {country}'s official "
@@ -90,7 +74,7 @@ def get_cybersecurity_risks(country):
     )
     try:
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4",  # Using GPT-4 for in-depth analysis
             messages=[
                 {"role": "system", "content": "You are a cybersecurity risk analyst who provides up-to-date, factual information with proper citations including publication years."},
                 {"role": "user", "content": prompt}
@@ -110,4 +94,14 @@ if st.button("Analyze Risks"):
             st.write(risks)
     else:
         st.error("Please enter a valid country name.")
+
+# Sidebar: List of secondary sources for further investigation
+st.sidebar.markdown("### Secondary Sources for Further Investigation")
+st.sidebar.markdown("""
+- [Krebs on Security](https://krebsonsecurity.com/)  
+- [The Hacker News](https://thehackernews.com/)  
+- [Threatpost](https://threatpost.com/)  
+- [SecurityWeek](https://www.securityweek.com/)  
+- [CyberScoop](https://www.cyberscoop.com/)
+""")
 
