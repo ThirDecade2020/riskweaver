@@ -40,20 +40,20 @@ st.title("RiskWeaver – Cybersecurity Risk Analyzer")
 country = st.text_input("Enter a country name:")
 
 # Define a function to get cybersecurity risks from OpenAI using GPT-4,
-# and provide a one-paragraph insight on similarities, differences, or shared patterns.
+# with a prompt that instructs the model to use up-to-date sources and include publication years.
 def get_cybersecurity_risks(country):
     prompt = (
-        f"Based on publicly available data from {country}'s official government cybersecurity agency "
-        f"and other reputable sources, list the top 5 cybersecurity risks for {country}. "
-        "Additionally, provide a one-paragraph insight discussing any similarities, glaring differences, or shared patterns among these risks. "
-        "Include specific references to the agency's name or website where possible, and do not speculate beyond publicly available data. "
-        "Provide sources or links where appropriate."
+        f"Using the most recent publicly available data as of now, and based on information from {country}'s official "
+        f"government cybersecurity agency and other reputable sources, list the top 5 cybersecurity risks for {country}. "
+        f"Additionally, provide a one-paragraph insight that discusses any similarities, glaring differences, or shared patterns "
+        f"among these risks. Include specific references such as the agency's name, website links, and the publication year of the data. "
+        f"Do not speculate beyond publicly available data."
     )
     try:
         response = client.chat.completions.create(
-            model="gpt-4",  # Using GPT-4 for in-depth analysis
+            model="gpt-4",  # Using GPT-4 for in-depth, current analysis
             messages=[
-                {"role": "system", "content": "You are a cybersecurity risk analyst, providing factual information with proper citations."},
+                {"role": "system", "content": "You are a cybersecurity risk analyst who provides up-to-date, factual information with proper citations including publication years."},
                 {"role": "user", "content": prompt}
             ]
         )
