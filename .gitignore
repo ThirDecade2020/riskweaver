@@ -1,0 +1,4 @@
+.env
+__pycache__/
+*.pyc
+country_inquiry_data.json
