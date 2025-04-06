@@ -40,17 +40,18 @@ st.title("RiskWeaver – Cybersecurity Risk Analyzer")
 country = st.text_input("Enter a country name:")
 
 # Define a function to get cybersecurity risks from OpenAI using GPT-4,
-# including references to official cybersecurity agencies and sources.
+# and provide a one-paragraph insight on similarities, differences, or shared patterns.
 def get_cybersecurity_risks(country):
     prompt = (
         f"Based on publicly available data from {country}'s official government cybersecurity agency "
         f"and other reputable sources, list the top 5 cybersecurity risks for {country}. "
-        f"Include specific references to the agency's name or website, and do not speculate beyond "
-        f"publicly available data. Provide sources or links where appropriate."
+        "Additionally, provide a one-paragraph insight discussing any similarities, glaring differences, or shared patterns among these risks. "
+        "Include specific references to the agency's name or website where possible, and do not speculate beyond publicly available data. "
+        "Provide sources or links where appropriate."
     )
     try:
         response = client.chat.completions.create(
-            model="gpt-4",  # Using GPT-4 for the best, in-depth analysis
+            model="gpt-4",  # Using GPT-4 for in-depth analysis
             messages=[
                 {"role": "system", "content": "You are a cybersecurity risk analyst, providing factual information with proper citations."},
                 {"role": "user", "content": prompt}
