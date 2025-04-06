@@ -1,5 +1,12 @@
 import streamlit as st
+import os
+from openai import OpenAI
+from dotenv import load_dotenv
 from country_inquiry_store import record_country_inquiry
+
+# Load environment variables from .env
+load_dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Inject custom CSS for a pixelated design with green and gold
 custom_css = """
@@ -26,21 +33,42 @@ div.stTextInput > label {
 </style>
 """
 
-# Apply the custom CSS
 st.markdown(custom_css, unsafe_allow_html=True)
 
-# App title
+# App title and input field
 st.title("RiskWeaver – Cybersecurity Risk Analyzer")
-
-# Input: Country name
 country = st.text_input("Enter a country name:")
 
-# Button to trigger risk analysis and record inquiry
+# Define a function to get cybersecurity risks from OpenAI using GPT-4,
+# including references to official cybersecurity agencies and sources.
+def get_cybersecurity_risks(country):
+    prompt = (
+        f"Based on publicly available data from {country}'s official government cybersecurity agency "
+        f"and other reputable sources, list the top 5 cybersecurity risks for {country}. "
+        f"Include specific references to the agency's name or website, and do not speculate beyond "
+        f"publicly available data. Provide sources or links where appropriate."
+    )
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4",  # Using GPT-4 for the best, in-depth analysis
+            messages=[
+                {"role": "system", "content": "You are a cybersecurity risk analyst, providing factual information with proper citations."},
+                {"role": "user", "content": prompt}
+            ]
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        return f"An error occurred: {e}"
+
+# When the button is clicked, record the inquiry and fetch the risks
 if st.button("Analyze Risks"):
     if country.strip():
-        # Record the inquiry for persistence (data is stored in the JSON file)
+        # Record the inquiry in our persistence layer (stored in the JSON file)
         record_country_inquiry(country)
         st.success(f"Running analysis for {country}...")
+        with st.spinner("Fetching cybersecurity risks..."):
+            risks = get_cybersecurity_risks(country)
+            st.write(risks)
     else:
         st.error("Please enter a valid country name.")
 
