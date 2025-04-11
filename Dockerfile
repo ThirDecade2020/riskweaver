@@ -2,8 +2,8 @@
 FROM python:3.9-slim
 
 # Prevent Python from writing .pyc files to disk and disable output buffering
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # Update package lists and install build-essential for compiling dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential && rm -rf /var/lib/apt/lists/*
