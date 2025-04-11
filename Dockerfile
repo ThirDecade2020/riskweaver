@@ -23,6 +23,7 @@ COPY . .
 # Expose the port that Streamlit uses (8501)
 EXPOSE 8501
 
-# Command to run your Streamlit app on port 8501 with CORS disabled
-CMD ["streamlit", "run", "riskweaver_app.py", "--server.port", "8501", "--server.enableCORS", "false"]
+# Command to run your Streamlit app on the dynamic $PORT (provided by the hosting platform) with CORS disabled
+CMD sh -c "streamlit run riskweaver_app.py --server.port $PORT --server.enableCORS false"
+
 
